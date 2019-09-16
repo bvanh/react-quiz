@@ -34,30 +34,37 @@ class App extends React.Component {
 
       ],
       numberquestion: 0,
-      status: ['', '', '', '']
+      numbercorrect: 0,
+      status: ['', '', '', ''],
     }
   }
-  checkAnswer(answer,numberQuestion,index){
-    const newCorrect=this.state.list[numberQuestion].correct;
-    if(numberQuestion<4){
-    if(newCorrect===answer){
-      numberQuestion+=1;
-    }else{
-      numberQuestion+=1
+  checkAnswer(answer, numberQuestion, numberCorrect, index) {
+    const newCorrect = this.state.list[numberQuestion].correct;
+    if (numberQuestion < 4) {
+      if (newCorrect === answer) {
+        numberQuestion += 1;
+        numberCorrect += 1;
+      } else {
+        numberQuestion += 1
+      }
+    } else {
+      numberQuestion = 4
     }
-  }else{
-    numberQuestion=0
+    this.setState({
+      numberquestion: numberQuestion,
+      numbercorrect: numberCorrect
+    })
+    console.log(index)
   }
-  this.setState({
-    numberquestion:numberQuestion
-  })
-  }
+
   render() {
+    // const list = this.state.list;
     const numberQuestion = this.state.numberquestion;
-    const listQuestion = this.state.list[numberQuestion].question;
+    const numberCorrect = this.state.numbercorrect;
+    const printQuestion = this.state.list[numberQuestion].question;
     const listAnwers = this.state.list[numberQuestion].answer;
-    const printQuestion = listAnwers.map((answer, index) =>
-      <li key={index} onClick={() => this.checkAnswer(answer,numberQuestion, index)}>
+    const printAnswer = listAnwers.map((answer, index) =>
+      <li key={index} onClick={() => this.checkAnswer(answer, numberQuestion, numberCorrect, index)}>
         <h3 className="exit">
           <p>{answer}</p>
         </h3>
@@ -66,11 +73,22 @@ class App extends React.Component {
     )
     return (
       <div className="App">
-        <h1>Quiz</h1>
-        <ul>
-          <h2>{listQuestion}</h2>
-        </ul>
-        {printQuestion}
+        {numberQuestion <=4 &&
+          <div>
+            <h1>Quiz</h1>
+            <ul>
+              <h2>{printQuestion}</h2>
+            </ul>
+            {printAnswer}
+          </div>
+        }
+        {numberQuestion === 4 &&
+          <div>
+            <h1>Chúc Mừng</h1>
+            <p>Bạn đã đúng {numberCorrect} /5 câu</p>
+            <button>Làm lại</button>
+          </div>
+        }
       </div>
     );
   }
