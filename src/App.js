@@ -34,13 +34,14 @@ class App extends React.Component {
 
       ],
       numberquestion: 0,
-      numbercorrect: 0,
+      numbercorrect: 1,
       status: ['', '', '', ''],
+      result: 0
     }
   }
   checkAnswer(answer, numberQuestion, numberCorrect, index) {
     const newCorrect = this.state.list[numberQuestion].correct;
-    if (numberQuestion < 4) {
+    if (numberQuestion <= 4) {
       if (newCorrect === answer) {
         numberQuestion += 1;
         numberCorrect += 1;
@@ -48,7 +49,7 @@ class App extends React.Component {
         numberQuestion += 1
       }
     } else {
-      numberQuestion = 4
+      numberQuestion = 5
     }
     this.setState({
       numberquestion: numberQuestion,
@@ -56,24 +57,30 @@ class App extends React.Component {
     })
     console.log(index)
   }
-
+  resetQuiz(numberQuestion, numberCorrect) {
+    numberQuestion = 0;
+    numberCorrect = 0;
+    this.setState({
+      numberquestion: numberQuestion,
+      numbercorrect: numberCorrect
+    })
+  }
   render() {
     // const list = this.state.list;
     const numberQuestion = this.state.numberquestion;
     const numberCorrect = this.state.numbercorrect;
-    const printQuestion = this.state.list[numberQuestion].question;
-    const listAnwers = this.state.list[numberQuestion].answer;
-    const printAnswer = listAnwers.map((answer, index) =>
-      <li key={index} onClick={() => this.checkAnswer(answer, numberQuestion, numberCorrect, index)}>
-        <h3 className="exit">
-          <p>{answer}</p>
-        </h3>
-      </li>
-
-    )
-    return (
-      <div className="App">
-        {numberQuestion <=4 &&
+    if (numberQuestion <= 4) {
+      const printQuestion = this.state.list[numberQuestion].question;
+      const listAnwers = this.state.list[numberQuestion].answer;
+      const printAnswer = listAnwers.map((answer, index) =>
+        <li key={index}>
+          <h3 className="exit" onClick={() => this.checkAnswer(answer, numberQuestion, numberCorrect, index)}>
+            <p>{answer}</p>
+          </h3>
+        </li>
+      )
+      return (
+        <div className="App">
           <div>
             <h1>Quiz</h1>
             <ul>
@@ -81,16 +88,17 @@ class App extends React.Component {
             </ul>
             {printAnswer}
           </div>
-        }
-        {numberQuestion === 4 &&
-          <div>
-            <h1>Chúc Mừng</h1>
-            <p>Bạn đã đúng {numberCorrect} /5 câu</p>
-            <button>Làm lại</button>
-          </div>
-        }
-      </div>
-    );
+        </div>
+      );
+    } else {
+      return (
+        <div className="App">
+          <h1>Chúc Mừng</h1>
+          <p>Bạn đã đúng {numberCorrect} /5 câu</p>
+          <button onClick={() => this.resetQuiz(numberQuestion, numberCorrect)}>Làm lại</button>
+        </div>
+      )
+    }
   }
 }
 

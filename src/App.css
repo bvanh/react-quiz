@@ -23,7 +23,8 @@ li{
 button{
   width:8rem;
   height:3rem;
-background-color:   #1ac740;
-border:0;
+  background-color:#1ac740;
+  border:0;
+  cursor: pointer;
 
 }
