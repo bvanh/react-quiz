@@ -69,7 +69,7 @@ class App extends React.Component {
   render() {
     const numberQuestion = this.state.numberquestion;
     const numberCorrect = this.state.totalcorrect;
-    const newStatus=this.state.status;
+    const newStatus = this.state.status;
     if (numberQuestion <= 4) {
       const printQuestion = this.state.list[numberQuestion].question;
       const listAnwers = this.state.list[numberQuestion].answer;
