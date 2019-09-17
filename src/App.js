@@ -40,16 +40,14 @@ class App extends React.Component {
   }
   checkAnswer(answer, numberQuestion, numberCorrect, index) {
     const newCorrect = this.state.list[numberQuestion].correct;
-    let newStatus = this.state.status.slice();
-    newStatus = ['', '', '', ''];
+    // let newStatus = this.state.status.slice();
+    // newStatus = ['', '', '', ''];
     if (numberQuestion <= 4) {
       if (newCorrect === answer) {
         numberQuestion += 1;
         numberCorrect += 1;
-        newStatus[index]= '<b>V</b>';
       } else {
-        numberQuestion += 1
-        newStatus[index]= '<b>X</b>';
+        numberQuestion += 1;
       }
     } else {
       numberQuestion = 5
@@ -57,7 +55,6 @@ class App extends React.Component {
     this.setState({
       numberquestion: numberQuestion,
       totalcorrect: numberCorrect,
-      status:newStatus
     })
     console.log(index)
   }
@@ -79,7 +76,8 @@ class App extends React.Component {
       const printAnswer = listAnwers.map((answer, index) =>
         <li key={index}>
           <h3 className="exit" onClick={() => this.checkAnswer(answer, numberQuestion, numberCorrect, index)}>
-            <p>{answer}</p><span dangerouslySetInnerHTML={{ __html: newStatus[index] }}/>
+            <p>{answer}</p>
+            {/* <span dangerouslySetInnerHTML={{ __html: newStatus[index] }}/> */}
           </h3>
         </li>
       )
