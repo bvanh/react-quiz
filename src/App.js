@@ -95,7 +95,7 @@ class App extends React.Component {
     } else {
       return (
         <div className="App">
-          <h1>Chúc Mừng Năm Mới</h1>
+          <h1>Chúc Mừng</h1>
           <p>Bạn đã đúng {numberCorrect} /5 câu</p>
           <button onClick={() => this.resetQuiz(numberQuestion, numberCorrect)}>Làm lại</button>
         </div>
