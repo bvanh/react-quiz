@@ -1,30 +1,66 @@
+body{
+  background-image: url(background.jpg)
+}
 .App {
   text-align: center;
+  font-family: cursive;
 }
-
+p{
+  margin:0 !important;
+}
+.start, .finish{
+margin:5rem auto;
+text-align: center;
+font-family:cursive;
+background-color: none;
+}
 .exit{
-  width: 300px;
-	height: 60px;
-	background-color: #4083b2;
-	border: 5px solid white;
-	border-radius: 20px;
+  width: 20rem;
+	height: 4rem;
+	background-color: #2f87a7 ;
+	border: 2px solid black;
+	/* border-radius: 1rem; */
 	transition: .2s;
-  display: block;
-  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin:0 auto;
   cursor: pointer;
+  color: white;
+  font-size: 1.2rem;
 }
-
-.exit:hover{
-  background-color: #1ac740;
+.exit1{
+    background-color:#0fa230;
+    border: 2px solid white;
+    color: white
+}
+.exit2{
+  background-color: #ff434c;
+  border: 2px solid white;
 }
 li{
   list-style-type: none;
+  padding: 2px
 }
-button{
-  width:8rem;
-  height:3rem;
-  background-color:#1ac740;
-  border:0;
-  cursor: pointer;
-
+.btn{
+margin-top:2rem;
+}
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.75rem 1.25rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  width: 15rem;
+  text-align: left;
+  margin-top: 1rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+h4{
+  margin-top:1rem !important;
+}
+.countdown{
+  font-size: 1.5rem;
+  margin-top: 1rem !important ;
 }
