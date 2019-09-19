@@ -1,9 +1,10 @@
 import React from 'react';
+import Homepage from './components/Homepage';
+import Quiz from './components/Quiz';
 import './App.css';
 import { Button } from 'reactstrap';
 import { ListGroupItem } from 'reactstrap';
-import { Progress } from 'reactstrap';
-import Homepage from './components/homepage';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -43,8 +44,8 @@ class App extends React.Component {
       listCorect: ['Câu 1: 63 Tỉnh', 'Câu 2: 4 Chân', 'Câu 3: 4 Con vịt', 'Câu 4: Số 3', 'Câu 5: Tổng = 4950'],
       showAnswer: false,
       progress: 0,
-      timeout:null,
-      interval:null,
+      timeout: null,
+      interval: null,
       minute: 0,
       second: 15
     }
@@ -99,7 +100,7 @@ class App extends React.Component {
     });
   }
   // start quiz
-  startQuiz(numberQuestion,newMinute,newSecond,timeOut,newInterval) {
+  startQuiz(numberQuestion, newMinute, newSecond, timeOut, newInterval) {
     newMinute = 0;
     newSecond = 15;
     numberQuestion = 0;
@@ -115,7 +116,7 @@ class App extends React.Component {
         second: newSecond
       });
     }, 1000);
-  timeOut = setTimeout(() => {
+    timeOut = setTimeout(() => {
       this.setState({
         numberquestion: 5,
         status: ['exit', 'exit', 'exit', 'exit'],
@@ -126,12 +127,12 @@ class App extends React.Component {
       numberquestion: numberQuestion,
       minute: newMinute,
       second: newSecond,
-      timeout:timeOut,
-      interval:newInterval
+      timeout: timeOut,
+      interval: newInterval
     })
   }
   // reset quiz
-  resetQuiz(numberQuestion, numberCorrect, newStatus, newMinute, newSecond,timeOut,newInterval) {
+  resetQuiz(numberQuestion, numberCorrect, newStatus, newMinute, newSecond, timeOut, newInterval) {
     numberQuestion = 0;
     numberCorrect = 0;
     newStatus = ['exit', 'exit', 'exit', 'exit'];
@@ -151,7 +152,7 @@ class App extends React.Component {
         second: newSecond
       });
     }, 1000);
-    timeOut=setTimeout(() => {
+    timeOut = setTimeout(() => {
       this.setState({
         numberquestion: numberQuestion = 5,
         status: ['exit', 'exit', 'exit', 'exit'],
@@ -166,29 +167,42 @@ class App extends React.Component {
       minute: newMinute,
       second: newSecond,
       isAnswered: false,
-      timeout:timeOut,
-      interval:newInterval
+      timeout: timeOut,
+      interval: newInterval
     })
   }
   render() {
-    const {numberQuestion,numberCorrect,newStatus,isAnswered,showAnswer,newMinute,newSecond,timeOut,newInterval}=this.state
-    return(
-      <Homepage
-        numberQuestion={numberQuestion}
-        timeOut={timeOut}
-        newInterval={newInterval}
-        startQuiz={()=>this.startQuiz()}
+    // const numberQuestion = this.state.numberquestion;
+    // const numberCorrect = this.state.totalcorrect;
+    // const newStatus = this.state.status;
+    // const isAnswered = this.state.isAnswered;
+    // const showAnswer = this.state.showAnswer;
+    // const newMinute = this.state.minute;
+    // const newSecond = this.state.second;
+    // const timeOut=this.state.timeout;
+    // const newInterval=this.state.interval;
+    const { list, numberquestion, totalcorrect, status, isAnswered, showAnswer, minute, second, timeout, interval, listCorect } = this.state
+    return (
+      <div>
+        <Homepage
+          numberQuestion={numberquestion}
+          timeOut={timeout}
+          newInterval={interval}
+          startQuiz={() => this.start()}
         />
-    )
-    // if (numberQuestion === '') {
-    //   return (
-    //     <div className="start">
-    //       <h1>Welcome to My Quiz ?!</h1>
-    //       <h4>In 15 seconds</h4>
-    //       <Button color="primary" size="lg" onClick={() => this.startQuiz(numberQuestion,timeOut,newInterval)}>Let's Go</Button>
+        <Quiz
+          list={list}
+          numberQuestion={numberquestion}
+          numberCorrect={totalcorrect}
+          isAnswered={isAnswered}
+          newMinute={minute}
+          newSecond={second}
+          checkAnswer={() => this.checkAnswer()}
+          newStatus={status}
 
-    //     </div>
-    //   )
+        />
+      </div>
+    )
     // } else if (numberQuestion <= 4 && numberQuestion >= 0) {
     //   const printQuestion = this.state.list[numberQuestion].question;
     //   const listAnwers = this.state.list[numberQuestion].answer;
