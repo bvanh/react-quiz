@@ -96,7 +96,6 @@ class App extends React.Component {
       numberquestion: numberQuestion,
       showAnswer: false
     });
-    console.log(this.state.second)
   }
   // start quiz
   startQuiz(numberQuestion,newMinute,newSecond,timeOut,newInterval) {
@@ -129,7 +128,6 @@ class App extends React.Component {
       timeout:timeOut,
       interval:newInterval
     })
-    console.log(this.state.timeout,timeOut)
   }
   // reset quiz
   resetQuiz(numberQuestion, numberCorrect, newStatus, newMinute, newSecond,timeOut,newInterval) {
@@ -170,7 +168,6 @@ class App extends React.Component {
       timeout:timeOut,
       interval:newInterval
     })
-    console.log(this.state.timeout,newInterval)
   }
   render() {
     const numberQuestion = this.state.numberquestion;
