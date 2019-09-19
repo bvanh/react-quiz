@@ -3,7 +3,6 @@ import './App.css';
 import { Button } from 'reactstrap';
 import { ListGroupItem } from 'reactstrap';
 import { Progress } from 'reactstrap';
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +42,8 @@ class App extends React.Component {
       listCorect: ['Câu 1: 63 Tỉnh', 'Câu 2: 4 Chân', 'Câu 3: 4 Con vịt', 'Câu 4: Số 3', 'Câu 5: Tổng = 4950'],
       showAnswer: false,
       progress: 0,
+      timeout:null,
+      interval:null,
       minute: 0,
       second: 15
     }
@@ -68,41 +69,6 @@ class App extends React.Component {
       status: newStatus
     })
   }
-  resetQuiz(numberQuestion, numberCorrect, newStatus,newMinute,newSecond) {
-    numberQuestion = 0;
-    numberCorrect = 0;
-    newStatus = ['exit', 'exit', 'exit', 'exit'];
-    newMinute = 0;
-    newSecond = 15;
-    const demo = setInterval(() => {
-      if(newSecond===0){
-        newMinute-=1;
-        newSecond=0;
-      }else if(newSecond>0){
-        newSecond-=1;
-      }
-      this.setState({
-          minute: newMinute,
-          second: newSecond
-      });
-    }, 1000);
-    setTimeout(() => {
-      this.setState({
-        numberquestion: numberQuestion = 5,
-        status: ['exit', 'exit', 'exit', 'exit'],
-      })
-      clearInterval(demo)
-    }, 15000);
-    this.setState({
-      numberquestion: numberQuestion,
-      totalcorrect: numberCorrect,
-      status: newStatus,
-      showAnswer: false,
-      minute: newMinute,
-      second: newSecond,
-      isAnswered: false
-    })
-  }
   nextQuestion(numberQuestion, isAnswered) {
     let newStatus = this.state.status.slice();
     newStatus = ['exit', 'exit', 'exit', 'exit'];
@@ -124,44 +90,87 @@ class App extends React.Component {
   }
   backHome(numberQuestion) {
     numberQuestion = '';
+    clearTimeout(this.state.timeout);
+    clearInterval(this.state.interval)
     this.setState({
-        numberquestion:numberQuestion,
-        showAnswer: false
+      numberquestion: numberQuestion,
+      showAnswer: false
     });
     console.log(this.state.second)
   }
-  startQuiz(numberQuestion,newMinute,newSecond) {
+  // start quiz
+  startQuiz(numberQuestion,newMinute,newSecond,timeOut,newInterval) {
     newMinute = 0;
     newSecond = 15;
     numberQuestion = 0;
-   const demo=setInterval(() => {
-      if(newSecond===0){
-        newMinute-=1;
-        newSecond=0;
-      }else if(newSecond>0){
-        newSecond-=1;
+    newInterval = setInterval(() => {
+      if (newSecond === 0) {
+        newMinute -= 1;
+        newSecond = 0;
+      } else if (newSecond > 0) {
+        newSecond -= 1;
       }
       this.setState({
-          minute: newMinute,
-          second: newSecond
+        minute: newMinute,
+        second: newSecond
       });
     }, 1000);
-    setTimeout(() => {
+  timeOut = setTimeout(() => {
+      this.setState({
+        numberquestion: 5,
+        status: ['exit', 'exit', 'exit', 'exit'],
+      })
+      clearInterval(newInterval)
+    }, 15000);
+    this.setState({
+      numberquestion: numberQuestion,
+      minute: newMinute,
+      second: newSecond,
+      timeout:timeOut,
+      interval:newInterval
+    })
+    console.log(this.state.timeout,timeOut)
+  }
+  // reset quiz
+  resetQuiz(numberQuestion, numberCorrect, newStatus, newMinute, newSecond,timeOut,newInterval) {
+    numberQuestion = 0;
+    numberCorrect = 0;
+    newStatus = ['exit', 'exit', 'exit', 'exit'];
+    clearTimeout(this.state.timeout);
+    clearInterval(this.state.interval)
+    newMinute = 0;
+    newSecond = 15;
+    newInterval = setInterval(() => {
+      if (newSecond === 0) {
+        newMinute -= 1;
+        newSecond = 0;
+      } else if (newSecond > 0) {
+        newSecond -= 1;
+      }
+      this.setState({
+        minute: newMinute,
+        second: newSecond
+      });
+    }, 1000);
+    timeOut=setTimeout(() => {
       this.setState({
         numberquestion: numberQuestion = 5,
         status: ['exit', 'exit', 'exit', 'exit'],
       })
-      clearInterval(demo)
+      clearInterval(newInterval)
     }, 15000);
-    if(numberQuestion===5){
-      clearInterval(demo)
-    }
     this.setState({
       numberquestion: numberQuestion,
-      minute:newMinute,
-      second:newSecond
+      totalcorrect: numberCorrect,
+      status: newStatus,
+      showAnswer: false,
+      minute: newMinute,
+      second: newSecond,
+      isAnswered: false,
+      timeout:timeOut,
+      interval:newInterval
     })
-    console.log(newSecond)
+    console.log(this.state.timeout,newInterval)
   }
   render() {
     const numberQuestion = this.state.numberquestion;
@@ -169,14 +178,16 @@ class App extends React.Component {
     const newStatus = this.state.status;
     const isAnswered = this.state.isAnswered;
     const showAnswer = this.state.showAnswer;
-    const newMinute=this.state.minute;
-    const newSecond=this.state.second;
+    const newMinute = this.state.minute;
+    const newSecond = this.state.second;
+    const timeOut=this.state.timeout;
+    const newInterval=this.state.interval;
     if (numberQuestion === '') {
       return (
         <div className="start">
           <h1>Welcome to My Quiz ?!</h1>
           <h4>In 15 seconds</h4>
-          <Button color="primary" size="lg" onClick={() => this.startQuiz(numberQuestion)}>Let's Go</Button>
+          <Button color="primary" size="lg" onClick={() => this.startQuiz(numberQuestion,timeOut,newInterval)}>Let's Go</Button>
 
         </div>
       )
@@ -207,7 +218,7 @@ class App extends React.Component {
       );
     } else {
       const listCorect = this.state.listCorect;
-      const printCorrect = listCorect.map((show,index) =>
+      const printCorrect = listCorect.map((show, index) =>
 
         <ListGroupItem key={index}>{show}</ListGroupItem>
 
@@ -216,9 +227,9 @@ class App extends React.Component {
         <div className="finish">
           <h1>Hoàn Thành !!!</h1>
           <h6>Bạn đã đúng {numberCorrect} / 5 câu</h6>
-          <Button color='success' className='btn' onClick={() => this.resetQuiz(numberQuestion, numberCorrect, newStatus,newMinute,newSecond)}>Làm lại</Button>{' '}
+          <Button color='success' className='btn' onClick={() => this.resetQuiz(numberQuestion, numberCorrect, newStatus,timeOut,newInterval)}>Làm lại</Button>{' '}
           <Button color='primary' className='btn' onClick={() => this.showAnswer()}>Xem đáp án</Button>{' '}
-          <Button color="danger" onClick={() => this.backHome(numberQuestion,newMinute,newSecond)}>Homepage</Button>
+          <Button color="danger" onClick={() => this.backHome(numberQuestion, newMinute, newSecond)}>Homepage</Button>
           {showAnswer &&
             <div>
               {printCorrect}
@@ -249,3 +260,23 @@ export default App;
 
     //   clearInterval(interval)
     // }, 1600)
+    // newSecond = 15;
+    // newInterval = setInterval(() => {
+    //   if (newSecond === 0) {
+    //     newMinute -= 1;
+    //     newSecond = 0;
+    //   } else if (newSecond > 0) {
+    //     newSecond -= 1;
+    //   }
+    //   this.setState({
+    //     minute: newMinute,
+    //     second: newSecond
+    //   });
+    // }, 1000);
+    // timeOut=setTimeout(() => {
+    //   this.setState({
+    //     numberquestion: numberQuestion = 5,
+    //     status: ['exit', 'exit', 'exit', 'exit'],
+    //   })
+    //   clearInterval(newInterval)
+    // }, 15000);
