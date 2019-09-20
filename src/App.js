@@ -1,6 +1,4 @@
 import React from 'react';
-import Homepage from './components/Homepage';
-import Quiz from './components/Quiz';
 import './App.css';
 import { Button } from 'reactstrap';
 import { ListGroupItem } from 'reactstrap';
@@ -172,84 +170,71 @@ class App extends React.Component {
     })
   }
   render() {
-    // const numberQuestion = this.state.numberquestion;
-    // const numberCorrect = this.state.totalcorrect;
-    // const newStatus = this.state.status;
-    // const isAnswered = this.state.isAnswered;
-    // const showAnswer = this.state.showAnswer;
-    // const newMinute = this.state.minute;
-    // const newSecond = this.state.second;
-    // const timeOut=this.state.timeout;
-    // const newInterval=this.state.interval;
-    const { list, numberquestion, totalcorrect, status, isAnswered, showAnswer, minute, second, timeout, interval, listCorect } = this.state
-    return (
-      <div>
-        <Homepage
-          numberQuestion={numberquestion}
-          timeOut={timeout}
-          newInterval={interval}
-          startQuiz={() => this.start()}
-        />
-        <Quiz
-          list={list}
-          numberQuestion={numberquestion}
-          numberCorrect={totalcorrect}
-          isAnswered={isAnswered}
-          newMinute={minute}
-          newSecond={second}
-          checkAnswer={() => this.checkAnswer()}
-          newStatus={status}
+    const numberQuestion = this.state.numberquestion;
+    const numberCorrect = this.state.totalcorrect;
+    const newStatus = this.state.status;
+    const isAnswered = this.state.isAnswered;
+    const showAnswer = this.state.showAnswer;
+    const newMinute = this.state.minute;
+    const newSecond = this.state.second;
+    const timeOut=this.state.timeout;
+    const newInterval=this.state.interval;
+    if (numberQuestion === '') {
+      return (
+          <div className="start">
+              <h1>Welcome to My Quiz ?!</h1>
+              <h4>In 15 seconds</h4>
+              <Button color="primary" size="lg" onClick={() => this.startQuiz(numberQuestion, timeOut, newInterval)}>Let's Go</Button>
 
-        />
-      </div>
-    )
-    // } else if (numberQuestion <= 4 && numberQuestion >= 0) {
-    //   const printQuestion = this.state.list[numberQuestion].question;
-    //   const listAnwers = this.state.list[numberQuestion].answer;
-    //   const printAnswer = listAnwers.map((answer, index) =>
-    //     <li key={index}>
-    //       <h3 className={newStatus[index]} onClick={() => this.checkAnswer(answer, numberQuestion, numberCorrect, isAnswered, index)}>
-    //         <p>{answer}</p>
-    //       </h3>
-    //     </li>
-    //   )
-    //   return (
-    //     <div className="App">
-    //       <div>
-    //         <h1>Quiz</h1>
-    //         <ul>
-    //           <h2>{printQuestion}</h2>
-    //         </ul>
-    //         {printAnswer}
-    //         <p className='countdown'>{newMinute < 10 ? "0" + newMinute : newMinute}:{newSecond < 10 ? "0" + newSecond : newSecond}</p>
-    //         {isAnswered &&
-    //           <Button className='btn' color="success" onClick={() => this.nextQuestion(numberQuestion, isAnswered)}>Tiếp theo</Button>
-    //         }
-    //       </div>
-    //     </div>
-    //   );
-    // } else {
-    //   const listCorect = this.state.listCorect;
-    //   const printCorrect = listCorect.map((show, index) =>
+          </div>
+      )
+    } else if (numberQuestion <= 4 && numberQuestion >= 0) {
+      const printQuestion = this.state.list[numberQuestion].question;
+      const listAnwers = this.state.list[numberQuestion].answer;
+      const printAnswer = listAnwers.map((answer, index) =>
+        <li key={index}>
+          <h3 className={newStatus[index]} onClick={() => this.checkAnswer(answer, numberQuestion, numberCorrect, isAnswered, index)}>
+            <p>{answer}</p>
+          </h3>
+        </li>
+      )
+      return (
+        <div className="App">
+          <div>
+            <h1>Quiz</h1>
+            <ul>
+              <h2>{printQuestion}</h2>
+            </ul>
+            {printAnswer}
+            <p className='countdown'>{newMinute < 10 ? "0" + newMinute : newMinute}:{newSecond < 10 ? "0" + newSecond : newSecond}</p>
+            {isAnswered &&
+              <Button className='btn' color="success" onClick={() => this.nextQuestion(numberQuestion, isAnswered)}>Tiếp theo</Button>
+            }
+          </div>
+        </div>
+      );
+    } else {
+      const listCorect = this.state.listCorect;
+      const printCorrect = listCorect.map((show, index) =>
 
-    //     <ListGroupItem key={index}>{show}</ListGroupItem>
+        <ListGroupItem key={index}>{show}</ListGroupItem>
 
-    //   )
-    //   return (
-    //     <div className="finish">
-    //       <h1>Hoàn Thành !!!</h1>
-    //       <h6>Bạn đã đúng {numberCorrect} / 5 câu</h6>
-    //       <Button color='success' className='btn' onClick={() => this.resetQuiz(numberQuestion, numberCorrect, newStatus,timeOut,newInterval)}>Làm lại</Button>{' '}
-    //       <Button color='primary' className='btn' onClick={() => this.showAnswer()}>Xem đáp án</Button>{' '}
-    //       <Button color="danger" onClick={() => this.backHome(numberQuestion, newMinute, newSecond)}>Homepage</Button>
-    //       {showAnswer &&
-    //         <div>
-    //           {printCorrect}
-    //         </div>
-    //       }
-    //     </div>
-    //   )
-    // }
+      )
+      return (
+        <div className="finish">
+          <h1>Hoàn Thành !!!</h1>
+          <h6>Bạn đã đúng {numberCorrect} / 5 câu</h6>
+          <Button color='success' className='btn' onClick={() => this.resetQuiz(numberQuestion, numberCorrect, newStatus,timeOut,newInterval)}>Làm lại</Button>{' '}
+          <Button color='primary' className='btn' onClick={() => this.showAnswer()}>Xem đáp án</Button>{' '}
+          <Button color="danger" onClick={() => this.backHome(numberQuestion, newMinute, newSecond)}>Homepage</Button>
+          {showAnswer &&
+            <div>
+              {printCorrect}
+            </div>
+          }
+        </div>
+      )
+    }
   }
 }
 
