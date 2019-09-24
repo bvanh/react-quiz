@@ -152,7 +152,7 @@ class App extends React.Component {
     }, 1000);
     timeOut = setTimeout(() => {
       this.setState({
-        numberquestion: numberQuestion = 5,
+        numberquestion: 5,
         status: ['exit', 'exit', 'exit', 'exit'],
       })
       clearInterval(newInterval)
